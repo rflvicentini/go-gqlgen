@@ -1,0 +1,37 @@
+# .gqlgen.yml example
+#
+# Refer to https://gqlgen.com/config/
+# for detailed .gqlgen.yml documentation.
+
+schema:
+  - api/**/*.graphql
+exec:
+  filename: api/graph/generated/generated.go
+  package: generated
+model:
+  filename: api/graph/generated/models_gen.go
+  package: generated
+models:
+  User:
+    model: github.com/rflvicentini/go-gqlgen/api/graph/models.User
+    fields:
+      meetups:
+        resolver: true
+  Meetup:
+    model: github.com/rflvicentini/go-gqlgen/api/graph/models.Meetup
+    fields:
+      user:
+        resolver: true
+  NewMeetup:
+    model: github.com/rflvicentini/go-gqlgen/api/graph/models.NewMeetup
+    fields:
+      user:
+        resolver: true
+# resolver:
+#   filename: resolver.go
+#   type: Resolver
+resolver:
+  filename: api/graph/generated/resolver.go
+  package: generated
+  type: Resolver
+autobind: []
