@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"log"
@@ -12,17 +12,28 @@ import (
 
 const defaultPort = "8080"
 
-func main() {
+type Server struct {
+	port	string
+}
+
+func New() Server {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
-	c := generated.Config{Resolvers: &resolvers.Resolver{}}
+	s := Server{
+		port: port,
+	}
 
+	return s
+}
+
+func (s Server) Run() {
+	c := generated.Config{Resolvers: &resolvers.Resolver{}}
 	http.Handle("/", handler.Playground("GraphQL playground", "/query"))
 	http.Handle("/query", handler.GraphQL(generated.NewExecutableSchema(c)))
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Printf("connect to http://localhost:%s/ for GraphQL playground", s.port)
+	log.Fatal(http.ListenAndServe(":"+s.port, nil))
 }
