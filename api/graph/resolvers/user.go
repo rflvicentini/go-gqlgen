@@ -13,7 +13,19 @@ func (r *Resolver) User() generated.UserResolver {
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*models.User, error) {
-	return users, nil
+	repoUsers := r.UserRepo.FetchAll()
+	
+	result := []*models.User{}
+	for _, u := range repoUsers {
+		resultObj := models.User{
+			ID: u.ID,
+			Username: u.Username,
+			Email: u.Email,
+		}
+		result = append(result, &resultObj)
+	}
+
+	return result, nil
 }
 
 func (r *userResolver) Meetups(ctx context.Context, obj *models.User) ([]*models.Meetup, error) {
