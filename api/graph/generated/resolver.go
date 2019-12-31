@@ -40,6 +40,9 @@ type queryResolver struct{ *Resolver }
 func (r *queryResolver) Meetups(ctx context.Context) ([]*models.Meetup, error) {
 	panic("not implemented")
 }
+func (r *queryResolver) Users(ctx context.Context) ([]*models.User, error) {
+	panic("not implemented")
+}
 
 type userResolver struct{ *Resolver }
 
