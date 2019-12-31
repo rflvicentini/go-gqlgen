@@ -1,7 +1,6 @@
 package repo_user
 
 import (
-	"errors"
 	"net/http"
 )
 
@@ -24,8 +23,8 @@ var mock = []*User{
 	},
 }
 
-func (c UserRepo) FetchAll() []*User {
-	return mock
+func (c UserRepo) FetchAll() ([]*User, error) {
+	return mock, nil
 }
 
 func (c UserRepo) GetById(id string) (*User, error) {
@@ -39,7 +38,7 @@ func (c UserRepo) GetById(id string) (*User, error) {
 	}
 
 	if user == nil {
-		return nil, errors.New("User ID does not exists")
+		return nil, nil
 	}
 
 	return user, nil

@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"errors"
 	generated "github.com/rflvicentini/go-gqlgen/api/graph/generated"
 	"github.com/rflvicentini/go-gqlgen/api/graph/models"
 )
@@ -13,7 +14,10 @@ func (r *Resolver) User() generated.UserResolver {
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*models.User, error) {
-	repoUsers := r.UserRepo.FetchAll()
+	repoUsers, err := r.UserRepo.FetchAll()
+	if err != nil {
+		return nil, errors.New("Unknown error when fetching data")
+	}
 	
 	result := []*models.User{}
 	for _, u := range repoUsers {
@@ -31,9 +35,20 @@ func (r *queryResolver) Users(ctx context.Context) ([]*models.User, error) {
 func (r *userResolver) Meetups(ctx context.Context, obj *models.User) ([]*models.Meetup, error) {
 	var userMeetups []*models.Meetup
 
-	for _, m := range meetups {
+	repoMeetups, err := r.MeetupRepo.FetchAll()
+	if err != nil {
+		return nil, errors.New("Unknown error when fetching data")
+	}
+
+	for _, m := range repoMeetups {
 		if m.UserID == obj.ID {
-			userMeetups = append(userMeetups, m)
+			meetup := models.Meetup{
+				ID: m.ID,
+				Name: m.Name,
+				Description: m.Description,
+				UserID: m.UserID,
+			}
+			userMeetups = append(userMeetups, &meetup)
 		}
 	}
 

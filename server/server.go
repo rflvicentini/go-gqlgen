@@ -10,6 +10,7 @@ import (
 	generated "github.com/rflvicentini/go-gqlgen/api/graph/generated"
 	resolvers "github.com/rflvicentini/go-gqlgen/api/graph/resolvers"
 	repo_user "github.com/rflvicentini/go-gqlgen/pkg/repo/user"
+	repo_meetup "github.com/rflvicentini/go-gqlgen/pkg/repo/meetup"
 	"github.com/rflvicentini/go-gqlgen/pkg/net"
 )
 
@@ -17,6 +18,7 @@ const defaultPort = "8080"
 
 type Server struct {
 	UserRepo	repo_user.UserRepo
+	MeetupRepo	repo_meetup.MeetupRepo
 	Port			string
 }
 
@@ -31,8 +33,14 @@ func New() Server {
 		HTTPClient: &userAPIHTTPClient,
 	}
 
+	meetupAPIHTTPClient := GetDefaultHTTPClient("Repo API")
+	MeetupRepo := repo_meetup.MeetupRepo{
+		HTTPClient: &meetupAPIHTTPClient,
+	}
+
 	s := Server{
 		UserRepo: UserRepo,
+		MeetupRepo: MeetupRepo,
 		Port: port,
 	}
 
@@ -42,6 +50,7 @@ func New() Server {
 func (s Server) Run() {
 	c := generated.Config{Resolvers: &resolvers.Resolver{
 		UserRepo: &s.UserRepo,
+		MeetupRepo: &s.MeetupRepo,
 	}}
 	http.Handle("/", handler.Playground("GraphQL playground", "/query"))
 	http.Handle("/query", handler.GraphQL(generated.NewExecutableSchema(c)))

@@ -2,27 +2,13 @@ package resolvers
 
 import (
 	generated "github.com/rflvicentini/go-gqlgen/api/graph/generated"
-	"github.com/rflvicentini/go-gqlgen/api/graph/models"
 	repo_user "github.com/rflvicentini/go-gqlgen/pkg/repo/user"
+	repo_meetup "github.com/rflvicentini/go-gqlgen/pkg/repo/meetup"
 )
-
-var meetups = []*models.Meetup{
-	{
-		ID: "1",
-		Name: "Meetup: Go",
-		Description: "Golang",
-		UserID: "1",
-	},
-	{
-		ID: "2",
-		Name: "Meetup: GQLGen",
-		Description: "GQLGen",
-		UserID: "2",
-	},
-}
 
 type Resolver struct{
 	UserRepo    *repo_user.UserRepo
+	MeetupRepo    *repo_meetup.MeetupRepo
 }
 
 type queryResolver struct{ *Resolver }
