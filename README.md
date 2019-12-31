@@ -11,7 +11,7 @@ Install [make](https://github.com/mklabs/make#readme "make") to you can use the 
 $ make run
 ```
 
-You can see some sample queris in ./api/graph/README.md
+You can see some sample queries [here](https://github.com/rflvicentini/go-gqlgen/blob/master/api/graph/README.md "here") or in ./api/graph/README.md
 
 ## GQLGen
 
