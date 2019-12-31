@@ -1,0 +1,19 @@
+extend type Query {
+    meetups: [Meetup!]!
+}
+
+extend type Mutation {
+    createMeetup(input: NewMeetup!): Meetup!
+}
+
+type Meetup {
+    id: ID!
+    name: String!
+    description: String!
+    user: User!
+}
+
+input NewMeetup {
+    name: String!
+    description: String!
+}
